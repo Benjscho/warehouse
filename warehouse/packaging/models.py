@@ -18,6 +18,7 @@ from urllib.parse import urlparse
 import packaging.utils
 
 from citext import CIText
+from natsort import natsort_keygen
 from pyramid.security import Allow
 from pyramid.threadlocal import get_current_request
 from sqlalchemy import (
@@ -414,7 +415,7 @@ class Release(db.Model):
         backref="release",
         cascade="all, delete-orphan",
         lazy="dynamic",
-        order_by=lambda: File.filename,
+        order_by=lambda: natsort_keygen(File.filename),
         passive_deletes=True,
     )
 
